@@ -28,8 +28,8 @@ import { useState } from "react";
 import {
   createProductSchema,
   CreateProductSchema,
-} from "@/app/_actions/product/create-products/schema";
-import { createProduct } from "@/app/_actions/product/create-products";
+} from "@/app/_actions/product/create-product/schema";
+import { createProduct } from "@/app/_actions/product/create-product";
 
 const CreateProductButton = () => {
   const [dialogIsOpen, setDialogIsOpen] = useState(false);

@@ -30,7 +30,7 @@ import {
 import { formatCurrency } from "@/app/_helpers/currency";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Product } from "@prisma/client";
-import { PlusIcon } from "lucide-react";
+import { Currency, PlusIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -74,16 +74,25 @@ const UpsertSheetContent = ({
 
   const onSubmit = (data: FormSchema) => {
     const selectedProduct = products.find(
-      (product) => product.id == data.productId,
+      (product) => product.id === data.productId,
     );
     if (!selectedProduct) return;
     setSelectedProducts((currentProducts) => {
       const existingProduct = currentProducts.find(
-        (product) => product.id == selectedProduct.id,
+        (product) => product.id === selectedProduct.id,
       );
       if (existingProduct) {
+        const productIsOutOfStock =
+          existingProduct.quantity + data.quantity > selectedProduct.stock;
+        if (productIsOutOfStock) {
+          form.setError("quantity", {
+            message: "Quantidade indisponível em estoque.",
+          });
+          return currentProducts;
+        }
+        form.reset();
         return currentProducts.map((product) => {
-          if (product.id == selectedProduct.id) {
+          if (product.id === selectedProduct.id) {
             return {
               ...product,
               quantity: product.quantity + data.quantity,
@@ -92,6 +101,14 @@ const UpsertSheetContent = ({
           return product;
         });
       }
+      const productIsOutOfStock = data.quantity > selectedProduct.stock;
+      if (productIsOutOfStock) {
+        form.setError("quantity", {
+          message: "Quantidade indisponível em estoque.",
+        });
+        return currentProducts;
+      }
+      form.reset();
       return [
         ...currentProducts,
         {
@@ -101,7 +118,6 @@ const UpsertSheetContent = ({
         },
       ];
     });
-    form.reset();
   };
 
   const productsTotal = useMemo(() => {

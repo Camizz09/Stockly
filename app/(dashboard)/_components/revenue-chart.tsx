@@ -25,7 +25,7 @@ const RevenueChart = ({ data }: RevenueChartProps) => {
       <BarChart accessibilityLayer data={data}>
         <CartesianGrid vertical={false} />
         <XAxis
-          dataKey="date"
+          dataKey="day"
           tickLine={false}
           tickMargin={10}
           axisLine={false}

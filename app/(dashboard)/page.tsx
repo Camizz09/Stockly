@@ -16,6 +16,9 @@ import MostSoldProducts, {
   MostSoldProductSkeleton,
 } from "./_components/most-sold-products";
 
+// Essa página será montada do zero a cada acesso (SSR)
+export const dynamic = "force-dynamic";
+
 const Home = async () => {
   return (
     <div className="m-8 flex w-full flex-col space-y-8 rounded-lg">
@@ -30,7 +33,6 @@ const Home = async () => {
         <Suspense fallback={<SummaryCardSkeleton />}>
           <TotalRevenueCard />
         </Suspense>
-
         <Suspense fallback={<SummaryCardSkeleton />}>
           <TodayRevenueCard />
         </Suspense>
@@ -39,11 +41,9 @@ const Home = async () => {
         <Suspense fallback={<SummaryCardSkeleton />}>
           <TotalSalesCard />
         </Suspense>
-
         <Suspense fallback={<SummaryCardSkeleton />}>
           <TotalInStockCard />
         </Suspense>
-
         <Suspense fallback={<SummaryCardSkeleton />}>
           <TotalProductsCard />
         </Suspense>

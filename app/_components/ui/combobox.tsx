@@ -37,7 +37,7 @@ export const Combobox = React.forwardRef<
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          ref={ref} // Forward the ref to the Button component
+          ref={ref}
           variant="outline"
           role="combobox"
           aria-expanded={open}
@@ -83,4 +83,4 @@ export const Combobox = React.forwardRef<
   );
 });
 
-Combobox.displayName = "Combobox"; // Optional: for better debugging
+Combobox.displayName = "Combobox";

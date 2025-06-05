@@ -8,12 +8,18 @@ import { actionClient } from "@/app/_lib/safe-action";
 export const upsertProduct = actionClient
   .schema(upsertProductSchema)
   .action(async ({ parsedInput: { id, ...data } }) => {
-    upsertProductSchema.parse(data);
-    await db.product.upsert({
-      where: { id: id ?? "" },
-      update: data,
-      create: data,
-    });
-    revalidatePath("/products");
-    revalidatePath("/");
+    try {
+      await db.product.upsert({
+        where: { id: id ?? "" },
+        update: data,
+        create: data,
+      });
+      
+      revalidatePath("/products");
+      revalidatePath("/");
+      
+      return { success: true };
+    } catch (error) {
+      throw new Error("Erro ao salvar produto");
+    }
   });

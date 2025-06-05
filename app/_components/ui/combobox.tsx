@@ -27,18 +27,17 @@ interface ComboboxProps {
   placeholder?: string;
 }
 
-export const Combobox = ({
-  value,
-  options,
-  placeholder,
-  onChange,
-}: ComboboxProps) => {
+export const Combobox = React.forwardRef<
+  React.ElementRef<typeof Button>,
+  ComboboxProps
+>(({ value, options, placeholder, onChange }, ref) => {
   const [open, setOpen] = React.useState(false);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
+          ref={ref}
           variant="outline"
           role="combobox"
           aria-expanded={open}
@@ -61,6 +60,8 @@ export const Combobox = ({
                   key={option.value}
                   value={option.value}
                   onSelect={(currentValue) => {
+                    console.log("CommandItem onSelect - currentValue:", currentValue);
+                    console.log("CommandItem onSelect - before onChange, field.value was:", value);
                     onChange(currentValue === value ? "" : currentValue);
                     setOpen(false);
                   }}
@@ -80,4 +81,6 @@ export const Combobox = ({
       </PopoverContent>
     </Popover>
   );
-};
+});
+
+Combobox.displayName = "Combobox";
